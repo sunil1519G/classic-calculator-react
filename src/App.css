@@ -8,14 +8,17 @@
   padding: 16px;
 }
 
-the display {
-  background: #222;
-  color: #16ff16;
+.display {
+  width: 100%;
+  box-sizing: border-box;
+  background: #fff;
+  color: #222;
   font-size: 2em;
   text-align: right;
   padding: 12px;
   border-radius: 6px;
   margin-bottom: 10px;
+  border: 2px solid #bbb;
 }
 
 .keypad {
