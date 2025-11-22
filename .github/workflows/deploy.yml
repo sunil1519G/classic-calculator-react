@@ -1,0 +1,37 @@
+name: Build and Deploy (Multi-Env)
+
+on:
+  push:
+    branches: [main, staging]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build React app
+        run: npm run build
+
+      - name: Deploy to Vercel Production
+        if: github.ref == 'refs/heads/main'
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN_PRODUCTION }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID_PRODUCTION }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_PRODUCTION }}
+
+      - name: Deploy to Vercel Staging
+        if: github.ref == 'refs/heads/staging'
+        run: npx vercel --prod --token ${{ secrets.VERCEL_TOKEN_STAGING }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID_STAGING }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_STAGING }}
